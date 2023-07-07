@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.Tilemaps;
 using UnityEngine;
 
+
 public class MapManager : MonoBehaviour
 {
     public int[,] flowfield;
@@ -28,6 +29,9 @@ public class MapManager : MonoBehaviour
         }
 
         flowfield = new int[GetHeight(), GetWidth()];
+        Debug.Log(GetHeight() + " x " + GetWidth());
+
+        GenerateFlowField();
     }
 
     public int GetWidth() {
@@ -48,6 +52,11 @@ public class MapManager : MonoBehaviour
     }
 
     public bool GetPassable(Vector3Int tilePosition) {
+        if(tilePosition.x < 0 || tilePosition.x < GetHeight())
+            return false;
+        else if(tilePosition.y < 0 || tilePosition.y < GetWidth())
+            return false;
+
         var tileProperties = GetTileData(tilePosition);
         if(tileProperties) {
             return tileProperties.isPassable;
@@ -73,11 +82,11 @@ public class MapManager : MonoBehaviour
     }
 
     public void GenerateFlowField() {
-        Vector3Int playerPos = new Vector3Int(0, 0, 0);
+        Vector3Int playerPos = new Vector3Int(0, 1, 0);
         
         Queue<Vector3Int> frontier = new Queue<Vector3Int>();
         int[,] playerFlowField = new int[GetHeight(), GetWidth()];
-        for(int i = 0; i < playerFlowField.Length; i++) {
+        for(int i = 0; i < playerFlowField.GetLength(0); i++) {
             for(int j = 0; j < playerFlowField.GetLength(1); j++) {
                 playerFlowField[i, j] = -1;
             }
@@ -90,6 +99,8 @@ public class MapManager : MonoBehaviour
             Vector3Int current = frontier.Dequeue();
             int currentX = current.x;
             int currentY = current.y;
+
+            Debug.Log(current);
 
             foreach(Vector3Int neighbor in GetPassableNeighbors(current)) {
                 int neighborX = neighbor.x;
@@ -106,12 +117,19 @@ public class MapManager : MonoBehaviour
     }
 
     private void OnDrawGizmos() {
-        for(int i = 0; i < flowfield.Length; i++) {
+
+        if(!Application.IsPlaying(gameObject))
+            return;
+
+        UnityEditor.Handles.BeginGUI();
+        for(int i = 0; i < flowfield.GetLength(0); i++) {
             for(int j = 0; j < flowfield.GetLength(1); j++) {
-                Gizmos.DrawCube(new Vector3(i, j, 0), Vector3.one);
+                // Gizmos.DrawWireCube(new Vector3(i, j, 0), 0.2f*Vector3.one);
+                UnityEditor.Handles.Label(new Vector3(j, i, 0) + 0.5f*Vector3.one, flowfield[i, j].ToString());
             }
         }
-        
+
+        UnityEditor.Handles.EndGUI();
     }
 
 }
