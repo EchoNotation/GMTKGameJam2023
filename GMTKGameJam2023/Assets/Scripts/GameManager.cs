@@ -1,22 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public GameObject goon;
     public float spawnX, spawnY;
+    public GameObject winPanel, losePanel;
     private const int maxGoonsAlive = 10;
     private int numberGoonsAlive;
     private int reinforcementCount;
     private float lastGoonSpawn;
     private const float goonSpawnCooldown = 1;
+    public bool levelCompleted = false;
 
     // Start is called before the first frame update
     void Start()
     {
         lastGoonSpawn = Time.time;
-        reinforcementCount = 50;
+        numberGoonsAlive = 0;
+        reinforcementCount = 0;
+        Time.timeScale = 1;
+
+        winPanel.SetActive(false);
+        losePanel.SetActive(false);
     }
 
     // Update is called once per frame
@@ -43,22 +51,27 @@ public class GameManager : MonoBehaviour
         numberGoonsAlive--;
     }
 
-    public void OnPlayerDeath()
+    public bool OnPlayerDeath()
     {
         if(numberGoonsAlive == 0 && reinforcementCount == 0)
         {
             //Game over
             LevelFailed();
+            return true;
         }
+        return false;
     }
 
     public void ExitReached()
     {
-        Debug.Log("Beat the level!");
+        levelCompleted = true;
+        GameObject.FindAnyObjectByType<Player>().isDead = true; //Just used to prevent movement after winning
+        winPanel.SetActive(true);
     }
 
     public void LevelFailed()
     {
-        Debug.Log("Game Over!");
+        if(levelCompleted) return;
+        losePanel.SetActive(true);
     }
 }

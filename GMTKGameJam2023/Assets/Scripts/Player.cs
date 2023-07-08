@@ -87,7 +87,6 @@ public class Player : MonoBehaviour
         collider2D.enabled = true;
         spriteRenderer.enabled = true;
         
-        Debug.Log("OnPlayerRespawn");
         Time.timeScale = 1f;
 
         rigidBody.simulated = true;
@@ -103,9 +102,10 @@ public class Player : MonoBehaviour
         collider2D.enabled = false;
         spriteRenderer.enabled = false;
         OnPlayerDeath?.Invoke();
-        Debug.Log("OnPlayerDeath");
-        Time.timeScale = 0.2f;
         hatGameObject.SetActive(true);
+        bool gameOver = GameObject.FindAnyObjectByType<GameManager>().OnPlayerDeath();
+
+        if(!gameOver) Time.timeScale = 0.2f;
     }
 
     void FixedUpdate()
