@@ -43,12 +43,4 @@ public class SpikeTrap : MonoBehaviour
             GetComponent<SpriteRenderer>().sprite = extended;
         }
     }
-
-    private void OnCollisionEnter (Collision collision)
-    {
-        if(collision.gameObject.CompareTag("Goon") || collision.gameObject.CompareTag("Player"))
-        {
-            UnityEngine.Debug.Log("Kill!");
-        }
-    }
 }
