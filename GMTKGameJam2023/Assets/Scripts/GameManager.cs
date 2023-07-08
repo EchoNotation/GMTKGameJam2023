@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public GameObject goon;
     public float spawnX, spawnY;
     public GameObject winPanel, losePanel;
-    private const int maxGoonsAlive = 10;
+    private const int maxGoonsAlive = 15;
     private int numberGoonsAlive;
     public int reinforcementCount;
     private float lastGoonSpawn;
@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     {
         lastGoonSpawn = Time.time;
         numberGoonsAlive = 0;
+
         Time.timeScale = 1;
 
         winPanel.SetActive(false);
@@ -52,7 +53,7 @@ public class GameManager : MonoBehaviour
 
     public bool OnPlayerDeath()
     {
-        if(numberGoonsAlive == 0 && reinforcementCount == 0)
+        if(numberGoonsAlive < 1 && reinforcementCount == 0)
         {
             //Game over
             LevelFailed();
