@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.ParticleSystemJobs;
 
 public class GoonController : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class GoonController : MonoBehaviour
     SpriteRenderer spriteRenderer;
 
     Color goonColor;
+
+    public GameObject particleSystemObject;
 
     // Start is called before the first frame update
     void Start()
@@ -88,6 +91,10 @@ public class GoonController : MonoBehaviour
         mapManager.RegisterDeath(transform.position);
         Destroy(gameObject);
         enabled = false;
+
+        GameObject particleObject = Instantiate(particleSystemObject, transform.position, Quaternion.identity);
+        ParticleSystem.MainModule sys = particleObject.GetComponent<ParticleSystem>().main;
+        sys.startColor = goonColor;
 
         GameObject.FindAnyObjectByType<GameManager>().OnGoonDeath();
     }
