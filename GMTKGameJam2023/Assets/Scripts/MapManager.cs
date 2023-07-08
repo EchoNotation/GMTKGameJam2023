@@ -20,6 +20,13 @@ public class MapManager : MonoBehaviour
         public TileProperties tileProperties;
     }
 
+    public struct Mark {
+        public Vector3Int position;
+        public float time;
+    }
+
+    List<Mark> marks;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,14 +38,34 @@ public class MapManager : MonoBehaviour
         flowfield = new int[GetWidth(), GetHeight()];
         Debug.Log(GetHeight() + " x " + GetWidth());
 
+        marks = new List<Mark>();
+
         StartCoroutine(MapUpdate());
     }
 
     IEnumerator MapUpdate() {
         while(true) {
             GenerateFlowField();
+            ProcessMarks();
             yield return new WaitForSeconds(.1f);
         }
+    }
+
+    public void RegisterDeath(Vector3 position) {
+        Vector3Int tilePosition = tilemap.WorldToCell(position);
+        Mark mark = new Mark {
+            position = tilePosition,
+            time = Time.time
+        };
+        marks.Add(mark);
+    }
+
+    private bool IsMarkOld(Mark mark) {
+        return mark.time + 10f < Time.time;
+    }
+
+    void ProcessMarks() {
+        marks.RemoveAll(IsMarkOld);
     }
 
     public int GetWidth() {
@@ -165,6 +192,11 @@ public class MapManager : MonoBehaviour
                 playerFlowField[newPos.x, newPos.y] += 1;
         }
         
+        // 3. avoid marked locations
+
+        foreach(Mark mark in marks) {
+            playerFlowField[mark.position.x, mark.position.y] += 5;
+        }
 
         // update flow field
         flowfield = playerFlowField;
