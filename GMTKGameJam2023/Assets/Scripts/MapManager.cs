@@ -196,6 +196,8 @@ public class MapManager : MonoBehaviour
             }
         }
 
+        playerFlowField[playerPos.x, playerPos.y] += 1;
+
         // 2. Avoid other goons
 
         
