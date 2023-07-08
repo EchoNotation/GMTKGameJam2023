@@ -62,6 +62,7 @@ public class GoonController : MonoBehaviour
     }
 
     private void OnMouseDown() {
+        Debug.Log("clicked goon");
         Player player = GameObject.FindObjectOfType<Player>();
         if(player && player.isDead) {
             player.Respawn(transform.position);
