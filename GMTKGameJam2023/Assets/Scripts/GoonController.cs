@@ -28,7 +28,9 @@ public class GoonController : MonoBehaviour
         if(!hasDestination) PickDestination();
 
         transform.position = Vector3.MoveTowards(transform.position, destination, speed * Time.deltaTime);
+        Debug.DrawLine(transform.position, destination);
 
-        if(Vector3.Distance(transform.position, destination) < 0.2f) hasDestination = false;
+        float distance = Vector3.Distance(transform.position, destination);
+        if(distance < 0.05f || distance > 2f) hasDestination = false;
     }
 }
