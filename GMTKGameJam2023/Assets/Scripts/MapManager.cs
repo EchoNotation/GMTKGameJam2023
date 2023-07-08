@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
-    public float[,] flowfield;
+    public int[,] flowfield;
 
     public Tilemap tilemap;
 
@@ -28,7 +28,7 @@ public class MapManager : MonoBehaviour
             tileData[m.tile] = m.tileProperties;
         }
 
-        flowfield = new float[GetWidth(), GetHeight()];
+        flowfield = new int[GetWidth(), GetHeight()];
         Debug.Log(GetHeight() + " x " + GetWidth());
 
         StartCoroutine(MapUpdate());
@@ -113,18 +113,19 @@ public class MapManager : MonoBehaviour
 
         // 1. Move towards player
 
-        Vector3Int playerPos = new Vector3Int(1, 1, 0);
+        Transform playerTransform = GameObject.FindObjectOfType<Player>().transform;
+        Vector3Int playerPos = tilemap.WorldToCell(playerTransform.position);
         
         Queue<Vector3Int> frontier = new Queue<Vector3Int>();
-        float[,] playerFlowField = new float[GetWidth(), GetHeight()];
+        int[,] playerFlowField = new int[GetWidth(), GetHeight()];
         for(int i = 0; i < playerFlowField.GetLength(0); i++) {
             for(int j = 0; j < playerFlowField.GetLength(1); j++) {
-                playerFlowField[i, j] = -1f;
+                playerFlowField[i, j] = -1;
             }
         }
 
         frontier.Enqueue(playerPos);
-        playerFlowField[playerPos.x, playerPos.y] = 0f;
+        playerFlowField[playerPos.x, playerPos.y] = 0;
 
         while(frontier.Count > 0) {
             Vector3Int current = frontier.Dequeue();
@@ -136,7 +137,7 @@ public class MapManager : MonoBehaviour
                 int neighborY = neighbor.y;
                 if(playerFlowField[neighborX, neighborY] == -1) {
                     frontier.Enqueue(neighbor);
-                    playerFlowField[neighborX, neighborY] = playerFlowField[currentX, currentY] + 0.5f;
+                    playerFlowField[neighborX, neighborY] = playerFlowField[currentX, currentY] + 1;
                 }
             }
         }
@@ -155,13 +156,13 @@ public class MapManager : MonoBehaviour
             // X . X
             //   X
             if(GetPassable(newPos = goonPosition + new Vector3Int(0, 1)))
-                playerFlowField[newPos.x, newPos.y] += 0.7f;
+                playerFlowField[newPos.x, newPos.y] += 1;
             if(GetPassable(newPos = goonPosition + new Vector3Int(0, -1)))
-                playerFlowField[newPos.x, newPos.y] += 0.7f;
+                playerFlowField[newPos.x, newPos.y] += 1;
             if(GetPassable(newPos = goonPosition + new Vector3Int(1, 0)))
-                playerFlowField[newPos.x, newPos.y] += 0.7f;
+                playerFlowField[newPos.x, newPos.y] += 1;
             if(GetPassable(newPos = goonPosition + new Vector3Int(-1, 0)))
-                playerFlowField[newPos.x, newPos.y] += 0.7f;
+                playerFlowField[newPos.x, newPos.y] += 1;
         }
         
 
