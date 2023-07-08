@@ -56,7 +56,7 @@ public class Player : MonoBehaviour
 
         for(float t = 0f; t <= hatTime*Time.timeScale; t += Time.deltaTime) {
             hatGameObject.transform.position = Vector3.Slerp(startingPosition, position, t/ (hatTime * Time.timeScale));
-            Debug.Log("hat moving " + t.ToString());
+            // Debug.Log("hat moving " + t.ToString());
             yield return new WaitForEndOfFrame();
         }
 
