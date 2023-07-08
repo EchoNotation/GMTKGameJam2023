@@ -76,6 +76,14 @@ public class CrossbowTurret : MonoBehaviour
 
         if(tgt == null) return;
 
+        Vector3 rayToTgt = tgt.transform.position - transform.position;
+        float angle = (Mathf.Atan(rayToTgt.y / rayToTgt.x) * Mathf.Rad2Deg) - 90;
+
+        if(rayToTgt.x < 0)
+        {
+            angle = (angle + 180) % 360;
+        }
+        bow.transform.rotation = Quaternion.RotateTowards(bow.transform.rotation, Quaternion.Euler(new Vector3(0, 0, angle)), 720*Time.deltaTime);
     }
 
     private void Fire()
@@ -106,6 +114,12 @@ public class CrossbowTurret : MonoBehaviour
     {
         if(other.CompareTag("Goon") || other.CompareTag("Player"))
         {
+            if(targets.Count == 0)
+            {
+                firing = false;
+                shotsFired = 0;
+                lastTime = timer.ElapsedMilliseconds;
+            }
             targets.Add(other.gameObject);
         }
     }
