@@ -16,6 +16,7 @@ public class CrossbowTurret : MonoBehaviour
     public GameObject bolt;
     public GameObject bow;
     private List<GameObject> targets;
+    private GameObject tgt;
     private Stopwatch timer;
     private long lastTime, fireTime, recoverTime;
     private int shotsFired;
@@ -24,6 +25,8 @@ public class CrossbowTurret : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        targets = new List<GameObject>();
+
         timer = new Stopwatch();
         timer.Start();
         firing = false;
@@ -37,7 +40,10 @@ public class CrossbowTurret : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UnityEngine.Debug.Log($"Tgt count: {targets.Count}");
+        if(targets.Count == 0) return;
+        Aim();
+
+        //UnityEngine.Debug.Log($"Tgt count: {targets.Count}");
 
         if(firing && mode == TurretMode.BURST && timer.ElapsedMilliseconds >= lastTime + fireTime)
         {
@@ -56,7 +62,7 @@ public class CrossbowTurret : MonoBehaviour
     private void Aim()
     {
         float minDistance = 99999;
-        GameObject tgt = null;
+        tgt = null;
         for(int i = 0; i < targets.Count; i++)
         {
             float distance = (targets[i].transform.position - transform.position).magnitude;
@@ -67,13 +73,15 @@ public class CrossbowTurret : MonoBehaviour
             }
         }
 
-        if(tgt == null) return;
 
+        if(tgt == null) return;
 
     }
 
     private void Fire()
     {
+        if(tgt == null) return;
+
         Vector3 position = transform.position;
         position.z = -5;
         Quaternion rotation = bow.transform.rotation;
