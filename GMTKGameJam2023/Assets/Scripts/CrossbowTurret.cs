@@ -24,6 +24,8 @@ public class CrossbowTurret : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        targets = new List<GameObject>();
+
         timer = new Stopwatch();
         timer.Start();
         firing = false;
@@ -66,6 +68,7 @@ public class CrossbowTurret : MonoBehaviour
                 tgt = targets[i];
             }
         }
+
 
         if(tgt == null) return;
 
