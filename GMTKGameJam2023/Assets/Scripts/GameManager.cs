@@ -1,13 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public GameObject goon;
     public float spawnX, spawnY;
-    private const int maxGoonsAlive = 20;
+    private const int maxGoonsAlive = 10;
     private int numberGoonsAlive;
     private int reinforcementCount;
     private float lastGoonSpawn;
@@ -25,7 +24,7 @@ public class GameManager : MonoBehaviour
     {
         if(reinforcementCount > 0)
         {
-            //Try and spawn a goon?
+            //Try and spawn a goon
             if(numberGoonsAlive < maxGoonsAlive && Time.time > lastGoonSpawn + goonSpawnCooldown)
             {
                 //Spawn a goon
@@ -46,6 +45,10 @@ public class GameManager : MonoBehaviour
 
     public void OnPlayerDeath()
     {
-
+        if(numberGoonsAlive == 0 && reinforcementCount == 0)
+        {
+            //Game over
+            Debug.Log("Game Over!");
+        }
     }
 }

@@ -66,6 +66,7 @@ public class Player : MonoBehaviour
         }
 
         Destroy(goon);
+        GameObject.FindObjectOfType<GameManager>().OnGoonDeath();
 
         hatGameObject.SetActive(false);
 

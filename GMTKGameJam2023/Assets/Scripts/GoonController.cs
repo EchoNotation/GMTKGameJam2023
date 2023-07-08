@@ -26,6 +26,8 @@ public class GoonController : MonoBehaviour
 
         goonColor = UnityEngine.Random.ColorHSV(0f, 1f, 0.2f, 0.8f, 0.9f, 1.0f);
         spriteRenderer.color = goonColor;
+
+        if(GameObject.FindObjectOfType<Player>().isDead) StartGlowing();
     }
 
     private void OnEnable() {
