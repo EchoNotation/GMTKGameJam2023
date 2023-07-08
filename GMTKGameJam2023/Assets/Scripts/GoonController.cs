@@ -11,6 +11,8 @@ public class GoonController : MonoBehaviour
     bool hasDestination = false;
     Vector3 destination;
 
+    float restUntil = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,10 +27,20 @@ public class GoonController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!hasDestination) PickDestination();
+        if(!hasDestination) {
+            // 10% chance to rest
+            if(Random.value < 0.9)
+                PickDestination();
+            else
+                restUntil = Time.time + Random.Range(0, 5);
+        }
 
-        transform.position = Vector3.MoveTowards(transform.position, destination, speed * Time.deltaTime);
+        else if(Time.time > restUntil) {
+            transform.position = Vector3.MoveTowards(transform.position, destination, speed * Time.deltaTime);
+            Debug.DrawLine(transform.position, destination);
 
-        if(Vector3.Distance(transform.position, destination) < 0.2f) hasDestination = false;
+            float distance = Vector3.Distance(transform.position, destination);
+            if(distance < 0.05f || distance > 2f) hasDestination = false;
+        }
     }
 }

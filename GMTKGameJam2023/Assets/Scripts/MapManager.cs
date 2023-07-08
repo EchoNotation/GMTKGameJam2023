@@ -31,7 +31,14 @@ public class MapManager : MonoBehaviour
         flowfield = new int[GetWidth(), GetHeight()];
         Debug.Log(GetHeight() + " x " + GetWidth());
 
-        GenerateFlowField();
+        StartCoroutine(MapUpdate());
+    }
+
+    IEnumerator MapUpdate() {
+        while(true) {
+            GenerateFlowField();
+            yield return new WaitForSeconds(.1f);
+        }
     }
 
     public int GetWidth() {
@@ -85,7 +92,7 @@ public class MapManager : MonoBehaviour
         Vector3Int  tilePosition = tilemap.WorldToCell(position);
 
         List<Vector3Int> best = new List<Vector3Int>();
-        int bestScore = 100;
+        float bestScore = 100f;
         foreach(Vector3Int neighbor in GetPassableNeighbors(tilePosition)) {
             if(flowfield[neighbor.x, neighbor.y] < bestScore) {
                 bestScore = flowfield[neighbor.x, neighbor.y];
@@ -103,7 +110,11 @@ public class MapManager : MonoBehaviour
     }
 
     public void GenerateFlowField() {
-        Vector3Int playerPos = new Vector3Int(1, 1, 0);
+
+        // 1. Move towards player
+
+        Transform playerTransform = GameObject.FindObjectOfType<Player>().transform;
+        Vector3Int playerPos = tilemap.WorldToCell(playerTransform.position);
         
         Queue<Vector3Int> frontier = new Queue<Vector3Int>();
         int[,] playerFlowField = new int[GetWidth(), GetHeight()];
@@ -121,8 +132,6 @@ public class MapManager : MonoBehaviour
             int currentX = current.x;
             int currentY = current.y;
 
-            Debug.Log(current);
-
             foreach(Vector3Int neighbor in GetPassableNeighbors(current)) {
                 int neighborX = neighbor.x;
                 int neighborY = neighbor.y;
@@ -132,6 +141,30 @@ public class MapManager : MonoBehaviour
                 }
             }
         }
+
+        // 2. Avoid other goons
+
+        
+        GameObject[] goons = GameObject.FindGameObjectsWithTag("Goon");
+        
+        foreach(GameObject goon in goons) {
+            Vector3Int goonPosition = tilemap.WorldToCell(goon.transform.position);
+
+            var newPos = new Vector3Int();
+
+            //   X 
+            // X . X
+            //   X
+            if(GetPassable(newPos = goonPosition + new Vector3Int(0, 1)))
+                playerFlowField[newPos.x, newPos.y] += 1;
+            if(GetPassable(newPos = goonPosition + new Vector3Int(0, -1)))
+                playerFlowField[newPos.x, newPos.y] += 1;
+            if(GetPassable(newPos = goonPosition + new Vector3Int(1, 0)))
+                playerFlowField[newPos.x, newPos.y] += 1;
+            if(GetPassable(newPos = goonPosition + new Vector3Int(-1, 0)))
+                playerFlowField[newPos.x, newPos.y] += 1;
+        }
+        
 
         // update flow field
         flowfield = playerFlowField;
