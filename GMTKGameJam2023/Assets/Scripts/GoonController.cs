@@ -9,6 +9,8 @@ public class GoonController : MonoBehaviour
     MapManager mapManager;
 
     public float speed = 2f;
+    public float restChance = 0.10f;
+    public float restTime = 2f;
 
     bool hasDestination = false;
     Vector3 destination;
@@ -104,10 +106,10 @@ public class GoonController : MonoBehaviour
     {
         if(!hasDestination) {
             // 10% chance to rest
-            if(UnityEngine.Random.value < 0.9)
+            if(UnityEngine.Random.value > restChance)
                 PickDestination();
             else
-                restUntil = Time.time + UnityEngine.Random.Range(0, 5);
+                restUntil = Time.time + restTime;
         }
 
         else if(Time.time > restUntil) {
