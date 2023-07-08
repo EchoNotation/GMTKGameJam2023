@@ -65,8 +65,8 @@ public class GoonController : MonoBehaviour
         Debug.Log("clicked goon");
         Player player = GameObject.FindObjectOfType<Player>();
         if(player && player.isDead) {
-            player.Respawn(transform.position);
-            Destroy(gameObject);
+            restUntil = Time.time + 3f;
+            player.Respawn(transform.position, gameObject);
         }
     }
 
