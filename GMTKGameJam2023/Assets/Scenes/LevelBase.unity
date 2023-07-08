@@ -133,7 +133,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3970230404724497535, guid: 4607f79abfe175e4da9a5cabfd9fc3b6, type: 3}
       propertyPath: m_Name
-      value: Goon (3)
+      value: Goon
       objectReference: {fileID: 0}
     - target: {fileID: 3970230404724497535, guid: 4607f79abfe175e4da9a5cabfd9fc3b6, type: 3}
       propertyPath: m_TagString
@@ -4597,7 +4597,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3970230404724497535, guid: 4607f79abfe175e4da9a5cabfd9fc3b6, type: 3}
       propertyPath: m_Name
-      value: Goon (2)
+      value: Goon
       objectReference: {fileID: 0}
     - target: {fileID: 3970230404724497535, guid: 4607f79abfe175e4da9a5cabfd9fc3b6, type: 3}
       propertyPath: m_TagString
@@ -4662,7 +4662,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3970230404724497535, guid: 4607f79abfe175e4da9a5cabfd9fc3b6, type: 3}
       propertyPath: m_Name
-      value: Goon (1)
+      value: Goon
       objectReference: {fileID: 0}
     - target: {fileID: 7600354179804682923, guid: 4607f79abfe175e4da9a5cabfd9fc3b6, type: 3}
       propertyPath: m_RootOrder
