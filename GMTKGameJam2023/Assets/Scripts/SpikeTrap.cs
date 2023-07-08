@@ -7,37 +7,34 @@ public class SpikeTrap : MonoBehaviour
 {
     private bool isExtended;
     public Sprite retracted, extended;
-    private Stopwatch timer;
-    private long lastTime, extendedTime, retractedTime;
+    private float lastTime, extendedTime, retractedTime;
     public BoxCollider2D spikeCollider;
 
     // Start is called before the first frame update
     void Start()
     {
         isExtended = false;
-        timer = new Stopwatch();
-        timer.Start();
 
         lastTime = 0;
-        extendedTime = 1000;
-        retractedTime = 3000;
+        extendedTime = 1f;
+        retractedTime = 3f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(isExtended && timer.ElapsedMilliseconds >= lastTime + extendedTime)
+        if(isExtended && Time.time >= lastTime + extendedTime)
         {
             //Retract
-            lastTime = timer.ElapsedMilliseconds;
+            lastTime = Time.time;
             isExtended = false;
             spikeCollider.enabled = false;
             GetComponent<SpriteRenderer>().sprite = retracted;
         }
-        else if(!isExtended && timer.ElapsedMilliseconds >= lastTime + retractedTime)
+        else if(!isExtended && Time.time >= lastTime + retractedTime)
         {
             //Extend
-            lastTime = timer.ElapsedMilliseconds;
+            lastTime = Time.time;
             isExtended = true;
             spikeCollider.enabled = true;
             GetComponent<SpriteRenderer>().sprite = extended;

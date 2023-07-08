@@ -17,8 +17,7 @@ public class CrossbowTurret : MonoBehaviour
     public GameObject bow;
     private List<GameObject> targets;
     private GameObject tgt;
-    private Stopwatch timer;
-    private long lastTime, fireTime, recoverTime;
+    private float lastTime, fireTime, recoverTime;
     private int shotsFired;
     private const float turnRate = 50;
 
@@ -27,12 +26,10 @@ public class CrossbowTurret : MonoBehaviour
     {
         targets = new List<GameObject>();
 
-        timer = new Stopwatch();
-        timer.Start();
         firing = false;
-        lastTime = 0; //Change to add a starting delay
-        fireTime = 500;
-        recoverTime = 2000;
+        lastTime = Time.time; //Change to add a starting delay
+        fireTime = 0.5f;
+        recoverTime = 2f;
 
         shotsFired = 0;
     }
@@ -45,14 +42,14 @@ public class CrossbowTurret : MonoBehaviour
 
         //UnityEngine.Debug.Log($"Tgt count: {targets.Count}");
 
-        if(firing && mode == TurretMode.BURST && timer.ElapsedMilliseconds >= lastTime + fireTime)
+        if(firing && mode == TurretMode.BURST && Time.time >= lastTime + fireTime)
         {
-            lastTime = timer.ElapsedMilliseconds;
+            lastTime = Time.time;
             Fire();
         }
-        else if(!firing && timer.ElapsedMilliseconds >= lastTime + recoverTime)
+        else if(!firing && Time.time >= lastTime + recoverTime)
         {
-            lastTime = timer.ElapsedMilliseconds;
+            lastTime = Time.time;
             firing = true;
 
             Fire();
@@ -118,7 +115,7 @@ public class CrossbowTurret : MonoBehaviour
             {
                 firing = false;
                 shotsFired = 0;
-                lastTime = timer.ElapsedMilliseconds;
+                lastTime = Time.time;
             }
             targets.Add(other.gameObject);
         }
