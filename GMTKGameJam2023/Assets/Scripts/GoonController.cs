@@ -81,6 +81,8 @@ public class GoonController : MonoBehaviour
         mapManager.RegisterDeath(transform.position);
         Destroy(gameObject);
         enabled = false;
+
+        GameObject.FindAnyObjectByType<GameManager>().OnGoonDeath();
     }
 
     // Update is called once per frame
