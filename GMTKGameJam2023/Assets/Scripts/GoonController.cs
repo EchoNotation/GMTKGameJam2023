@@ -14,28 +14,46 @@ public class GoonController : MonoBehaviour
 
     float restUntil = 0;
 
+    SpriteRenderer spriteRenderer;
+
+    Color goonColor;
+
     // Start is called before the first frame update
     void Start()
     {
         mapManager = FindAnyObjectByType<MapManager>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
+        goonColor = UnityEngine.Random.ColorHSV(0f, 1f, 0.2f, 0.8f, 0.9f, 1.0f);
+        spriteRenderer.color = goonColor;
     }
 
     private void OnEnable() {
-        Player.OnPlayerDeath += Glow;
+        Player.OnPlayerDeath += StartGlowing;
         Player.OnPlayerRespawn += StopGlowing;
     }
 
     private void OnDisable() {
-        Player.OnPlayerDeath -= Glow;
+        Player.OnPlayerDeath -= StartGlowing;
         Player.OnPlayerRespawn -= StopGlowing;
     }
 
-    void Glow() {
-
+    void StartGlowing() {
+        StartCoroutine("Glow");
     }
 
     void StopGlowing() {
+        StopCoroutine("Glow");
+        spriteRenderer.color = goonColor;
+    }
 
+    IEnumerator Glow() {
+        while(true) {
+            for(float t = 0f; t <= 1f; t += 0.01f) {
+                spriteRenderer.color = Color.Lerp(Color.white, Color.yellow, t);
+                yield return new WaitForEndOfFrame();
+            }
+        }
     }
 
     void PickDestination() {
