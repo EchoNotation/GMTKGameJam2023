@@ -62,6 +62,7 @@ public class CrossbowTurret : MonoBehaviour
         tgt = null;
         for(int i = 0; i < targets.Count; i++)
         {
+            if(!targets[i]) continue;
             float distance = (targets[i].transform.position - transform.position).magnitude;
             if(distance < minDistance)
             {

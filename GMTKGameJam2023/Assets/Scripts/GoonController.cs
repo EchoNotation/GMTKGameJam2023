@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.ParticleSystemJobs;
 
 public class GoonController : MonoBehaviour
 {
     MapManager mapManager;
 
     public float speed = 2f;
+    public float restChance = 0.10f;
+    public float restTime = 2f;
 
     bool hasDestination = false;
     Vector3 destination;
@@ -17,6 +20,8 @@ public class GoonController : MonoBehaviour
     SpriteRenderer spriteRenderer;
 
     Color goonColor;
+
+    public GameObject particleSystemObject;
 
     // Start is called before the first frame update
     void Start()
@@ -89,6 +94,10 @@ public class GoonController : MonoBehaviour
         Destroy(gameObject);
         enabled = false;
 
+        GameObject particleObject = Instantiate(particleSystemObject, transform.position, Quaternion.identity);
+        ParticleSystem.MainModule sys = particleObject.GetComponent<ParticleSystem>().main;
+        sys.startColor = goonColor;
+
         GameObject.FindAnyObjectByType<GameManager>().OnGoonDeath();
     }
 
@@ -97,10 +106,10 @@ public class GoonController : MonoBehaviour
     {
         if(!hasDestination) {
             // 10% chance to rest
-            if(UnityEngine.Random.value < 0.9)
+            if(UnityEngine.Random.value > restChance)
                 PickDestination();
             else
-                restUntil = Time.time + UnityEngine.Random.Range(0, 5);
+                restUntil = Time.time + restTime;
         }
 
         else if(Time.time > restUntil) {

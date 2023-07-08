@@ -25,6 +25,10 @@ public class MapManager : MonoBehaviour
         public float time;
     }
 
+    public float markMemoryTime = 10f;
+    public float mapUpdateTime = 0.1f;
+    public int markCost = 5;
+
     List<Mark> marks;
 
     // Start is called before the first frame update
@@ -47,7 +51,7 @@ public class MapManager : MonoBehaviour
         while(true) {
             GenerateFlowField();
             ProcessMarks();
-            yield return new WaitForSeconds(.1f);
+            yield return new WaitForSeconds(mapUpdateTime);
         }
     }
 
@@ -61,7 +65,7 @@ public class MapManager : MonoBehaviour
     }
 
     private bool IsMarkOld(Mark mark) {
-        return mark.time + 10f < Time.time;
+        return mark.time + markMemoryTime < Time.time;
     }
 
     void ProcessMarks() {
@@ -206,8 +210,6 @@ public class MapManager : MonoBehaviour
         foreach(GameObject goon in goons) {
             Vector3Int goonPosition = tilemap.WorldToCell(goon.transform.position);
 
-            var newPos = new Vector3Int();
-
             //   X 
             // X . X
             //   X
@@ -226,7 +228,7 @@ public class MapManager : MonoBehaviour
         // 3. avoid marked locations
 
         foreach(Mark mark in marks) {
-            playerFlowField[mark.position.x, mark.position.y] += 5;
+            playerFlowField[mark.position.x, mark.position.y] += markCost;
         }
 
         // update flow field

@@ -99,7 +99,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33281a7d19f716b4a80491f1662aec17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  speed: 3.5
+  restChance: 0.05
+  restTime: 2
+  particleSystemObject: {fileID: 9167385300031103377, guid: 40510f3d12736f041aaaad2fe8ff7ccb, type: 3}
 --- !u!58 &-3560113311702492214
 CircleCollider2D:
   m_ObjectHideFlags: 0
