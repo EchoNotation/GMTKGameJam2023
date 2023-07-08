@@ -39,8 +39,16 @@ public class Player : MonoBehaviour
         {
             Destroy(collision.gameObject);
             Die();
+        }   
+    }
+
+    private void OnTriggerEnter2D (Collider2D collision)
+    {
+        string tag = collision.gameObject.tag;
+        if(tag == "Exit")
+        {
+            GameObject.FindObjectOfType<GameManager>().ExitReached();
         }
-        
     }
 
     public void Respawn(Vector3 position, GameObject goon) {

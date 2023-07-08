@@ -48,7 +48,17 @@ public class GameManager : MonoBehaviour
         if(numberGoonsAlive == 0 && reinforcementCount == 0)
         {
             //Game over
-            Debug.Log("Game Over!");
+            LevelFailed();
         }
+    }
+
+    public void ExitReached()
+    {
+        Debug.Log("Beat the level!");
+    }
+
+    public void LevelFailed()
+    {
+        Debug.Log("Game Over!");
     }
 }
