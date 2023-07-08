@@ -23,6 +23,8 @@ public class GoonController : MonoBehaviour
 
     public GameObject particleSystemObject;
 
+    public GameObject splat;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -97,6 +99,9 @@ public class GoonController : MonoBehaviour
         GameObject particleObject = Instantiate(particleSystemObject, transform.position, Quaternion.identity);
         ParticleSystem.MainModule sys = particleObject.GetComponent<ParticleSystem>().main;
         sys.startColor = goonColor;
+
+        GameObject spawnedSplat = Instantiate(splat, transform.position, Quaternion.identity);
+        spawnedSplat.GetComponent<SplatSelector>().SetColor(goonColor);
 
         GameObject.FindAnyObjectByType<GameManager>().OnGoonDeath();
     }

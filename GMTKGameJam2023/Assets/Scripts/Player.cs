@@ -24,6 +24,8 @@ public class Player : MonoBehaviour
 
     public ParticleSystem deathParticleSystem;
 
+    public GameObject splat;
+
     private void Start() {
         rigidBody = GetComponent<Rigidbody2D>();
         isDead = false;
@@ -109,6 +111,9 @@ public class Player : MonoBehaviour
         bool gameOver = GameObject.FindAnyObjectByType<GameManager>().OnPlayerDeath();
 
         if(!gameOver) Time.timeScale = 0.2f;
+
+        GameObject spawnedSplat = Instantiate(splat, transform.position, Quaternion.identity);
+        spawnedSplat.GetComponent<SplatSelector>().SetColor(spriteRenderer.color);
 
         deathParticleSystem.Play();
     }

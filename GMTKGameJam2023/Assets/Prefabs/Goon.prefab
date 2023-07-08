@@ -103,6 +103,7 @@ MonoBehaviour:
   restChance: 0.05
   restTime: 2
   particleSystemObject: {fileID: 9167385300031103377, guid: 40510f3d12736f041aaaad2fe8ff7ccb, type: 3}
+  splat: {fileID: 1435899671491551835, guid: dab46e1a9b9c42741afadf6ccbc50dc8, type: 3}
 --- !u!58 &-3560113311702492214
 CircleCollider2D:
   m_ObjectHideFlags: 0
