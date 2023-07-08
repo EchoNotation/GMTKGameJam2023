@@ -81,6 +81,27 @@ public class MapManager : MonoBehaviour
         return res;
     }
 
+    public Vector3 GetDownFlowField(Vector3 position) {
+        Vector3Int  tilePosition = tilemap.WorldToCell(position);
+
+        List<Vector3Int> best = new List<Vector3Int>();
+        int bestScore = 100;
+        foreach(Vector3Int neighbor in GetPassableNeighbors(tilePosition)) {
+            if(flowfield[neighbor.x, neighbor.y] < bestScore) {
+                bestScore = flowfield[neighbor.x, neighbor.y];
+                best.Clear();
+                best.Add(neighbor);
+            }
+            else if(flowfield[neighbor.x, neighbor.y] == bestScore) {
+                best.Add(neighbor);
+            }
+        }
+
+        int idx = Random.Range(0, best.Count);
+
+        return best[idx] + new Vector3(0.5f, 0.5f, 0);
+    }
+
     public void GenerateFlowField() {
         Vector3Int playerPos = new Vector3Int(1, 1, 0);
         
