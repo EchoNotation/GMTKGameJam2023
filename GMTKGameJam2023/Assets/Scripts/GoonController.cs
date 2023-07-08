@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class GoonController : MonoBehaviour
@@ -19,9 +20,35 @@ public class GoonController : MonoBehaviour
         mapManager = FindAnyObjectByType<MapManager>();
     }
 
+    private void OnEnable() {
+        Player.OnPlayerDeath += Glow;
+        Player.OnPlayerRespawn += StopGlowing;
+    }
+
+    private void OnDisable() {
+        Player.OnPlayerDeath -= Glow;
+        Player.OnPlayerRespawn -= StopGlowing;
+    }
+
+    void Glow() {
+
+    }
+
+    void StopGlowing() {
+
+    }
+
     void PickDestination() {
         destination = mapManager.GetDownFlowField(transform.position);
         hasDestination = true;
+    }
+
+    private void OnMouseDown() {
+        Player player = GameObject.FindObjectOfType<Player>();
+        if(player && player.isDead) {
+            player.Respawn(transform.position);
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision) {
@@ -33,7 +60,7 @@ public class GoonController : MonoBehaviour
 
     void Die() {
         mapManager.RegisterDeath(transform.position);
-        Destroy(gameObject, 0.01f);
+        Destroy(gameObject);
         enabled = false;
     }
 
@@ -42,10 +69,10 @@ public class GoonController : MonoBehaviour
     {
         if(!hasDestination) {
             // 10% chance to rest
-            if(Random.value < 0.9)
+            if(UnityEngine.Random.value < 0.9)
                 PickDestination();
             else
-                restUntil = Time.time + Random.Range(0, 5);
+                restUntil = Time.time + UnityEngine.Random.Range(0, 5);
         }
 
         else if(Time.time > restUntil) {
