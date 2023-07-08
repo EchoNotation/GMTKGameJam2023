@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     public GameObject winPanel, losePanel;
     private const int maxGoonsAlive = 10;
     private int numberGoonsAlive;
-    private int reinforcementCount;
+    public int reinforcementCount;
     private float lastGoonSpawn;
     private const float goonSpawnCooldown = 1;
     public bool levelCompleted = false;
@@ -20,7 +20,6 @@ public class GameManager : MonoBehaviour
     {
         lastGoonSpawn = Time.time;
         numberGoonsAlive = 0;
-        reinforcementCount = 0;
         Time.timeScale = 1;
 
         winPanel.SetActive(false);

@@ -22,12 +22,15 @@ public class Player : MonoBehaviour
 
     bool isRespawning = false;
 
+    public ParticleSystem deathParticleSystem;
+
     private void Start() {
         rigidBody = GetComponent<Rigidbody2D>();
         isDead = false;
         spriteRenderer = GetComponent<SpriteRenderer>();
         collider2D = GetComponent<CircleCollider2D>();
         hatGameObject.SetActive(false);
+        deathParticleSystem = GetComponentInChildren<ParticleSystem>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
@@ -106,6 +109,8 @@ public class Player : MonoBehaviour
         bool gameOver = GameObject.FindAnyObjectByType<GameManager>().OnPlayerDeath();
 
         if(!gameOver) Time.timeScale = 0.2f;
+
+        deathParticleSystem.Play();
     }
 
     void FixedUpdate()

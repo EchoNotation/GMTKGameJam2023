@@ -8163,6 +8163,10 @@ PrefabInstance:
       propertyPath: losePanel
       value: 
       objectReference: {fileID: 933057541}
+    - target: {fileID: 5909323540278981699, guid: 4155c0a0a717b384888494836fa75df7, type: 3}
+      propertyPath: reinforcementCount
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
