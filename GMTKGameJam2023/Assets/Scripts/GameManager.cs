@@ -43,4 +43,9 @@ public class GameManager : MonoBehaviour
     {
         numberGoonsAlive--;
     }
+
+    public void OnPlayerDeath()
+    {
+
+    }
 }
