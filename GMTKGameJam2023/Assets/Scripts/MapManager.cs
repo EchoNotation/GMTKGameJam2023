@@ -101,16 +101,34 @@ public class MapManager : MonoBehaviour
     public List<Vector3Int> GetPassableNeighbors(Vector3Int pos) {
         var res = new List<Vector3Int>();
 
-        var newPos = new Vector3Int();
-        // walrus := ?
-        if(GetPassable(newPos = pos + new Vector3Int(0, 1)))
-            res.Add(newPos);
-        if(GetPassable(newPos = pos + new Vector3Int(1, 0)))
-            res.Add(newPos);
-        if(GetPassable(newPos = pos + new Vector3Int(-1, 0)))
-            res.Add(newPos);
-        if(GetPassable(newPos = pos + new Vector3Int(0, -1)))
-            res.Add(newPos);
+        Vector3Int rightPos = pos + new Vector3Int(1, 0);
+        Vector3Int leftPos = pos + new Vector3Int(-1, 0);
+        Vector3Int upPos = pos + new Vector3Int(0, 1);
+        Vector3Int downPos = pos + new Vector3Int(0, -1);
+
+        Vector3Int rightUpPos = pos + new Vector3Int(1, 1);
+        Vector3Int rightDownPos = pos + new Vector3Int(1, -1);
+        Vector3Int leftUpPos = pos + new Vector3Int(-1, 1);
+        Vector3Int leftDownPos = pos + new Vector3Int(-1, -1);
+
+        if(GetPassable(rightPos))
+            res.Add(rightPos);
+        if(GetPassable(leftPos))
+            res.Add(leftPos);
+        if(GetPassable(upPos))
+            res.Add(upPos);
+        if(GetPassable(downPos))
+            res.Add(downPos);
+
+        // move diagnonals
+        if(GetPassable(rightUpPos) && GetPassable(rightPos) && GetPassable(upPos))
+            res.Add(rightUpPos);
+        if(GetPassable(rightDownPos) && GetPassable(rightPos) && GetPassable(downPos))
+            res.Add(rightDownPos);
+        if(GetPassable(leftUpPos) && GetPassable(leftPos) && GetPassable(upPos))
+            res.Add(leftUpPos);
+        if(GetPassable(leftDownPos) && GetPassable(leftPos) && GetPassable(downPos))
+            res.Add(leftDownPos);
 
         return res;
     }
@@ -178,6 +196,8 @@ public class MapManager : MonoBehaviour
             }
         }
 
+        playerFlowField[playerPos.x, playerPos.y] += 1;
+
         // 2. Avoid other goons
 
         
@@ -191,14 +211,16 @@ public class MapManager : MonoBehaviour
             //   X 
             // X . X
             //   X
-            if(GetPassable(newPos = goonPosition + new Vector3Int(0, 1)))
-                playerFlowField[newPos.x, newPos.y] += 1;
-            if(GetPassable(newPos = goonPosition + new Vector3Int(0, -1)))
-                playerFlowField[newPos.x, newPos.y] += 1;
-            if(GetPassable(newPos = goonPosition + new Vector3Int(1, 0)))
-                playerFlowField[newPos.x, newPos.y] += 1;
-            if(GetPassable(newPos = goonPosition + new Vector3Int(-1, 0)))
-                playerFlowField[newPos.x, newPos.y] += 1;
+            if(GetPassable(goonPosition))
+                playerFlowField[goonPosition.x, goonPosition.y] += 1;
+            //if(GetPassable(newPos = goonPosition + new Vector3Int(0, 1)))
+            //    playerFlowField[newPos.x, newPos.y] += 1;
+            //if(GetPassable(newPos = goonPosition + new Vector3Int(0, -1)))
+            //    playerFlowField[newPos.x, newPos.y] += 1;
+            //if(GetPassable(newPos = goonPosition + new Vector3Int(1, 0)))
+            //    playerFlowField[newPos.x, newPos.y] += 1;
+            //if(GetPassable(newPos = goonPosition + new Vector3Int(-1, 0)))
+            //    playerFlowField[newPos.x, newPos.y] += 1;
         }
         
         // 3. avoid marked locations
