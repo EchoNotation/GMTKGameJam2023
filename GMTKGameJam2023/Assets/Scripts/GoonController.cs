@@ -24,6 +24,19 @@ public class GoonController : MonoBehaviour
         hasDestination = true;
     }
 
+    private void OnTriggerStay2D(Collider2D collision) {
+        string tag = collision.GetComponent<Collider2D>().gameObject.tag;
+        if(tag == "Bolt" || tag == "Whirly" || tag == "SpikeTrap") {
+            Die();
+        }
+    }
+
+    void Die() {
+        mapManager.RegisterDeath(transform.position);
+        Destroy(gameObject, 0.01f);
+        enabled = false;
+    }
+
     // Update is called once per frame
     void Update()
     {
