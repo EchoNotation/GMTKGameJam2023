@@ -140,11 +140,20 @@ public class MapManager : MonoBehaviour
 
         // 1. Move towards player
 
-        Transform playerTransform = GameObject.FindObjectOfType<Player>().transform;
+        int[,] playerFlowField = new int[GetWidth(), GetHeight()];
+
+        Player player = GameObject.FindObjectOfType<Player>();
+        if(!player && player.isDead) {
+            flowfield = playerFlowField;
+            return;
+        }
+
+        Transform playerTransform = player.transform;
+
         Vector3Int playerPos = tilemap.WorldToCell(playerTransform.position);
         
         Queue<Vector3Int> frontier = new Queue<Vector3Int>();
-        int[,] playerFlowField = new int[GetWidth(), GetHeight()];
+        
         for(int i = 0; i < playerFlowField.GetLength(0); i++) {
             for(int j = 0; j < playerFlowField.GetLength(1); j++) {
                 playerFlowField[i, j] = -1;
