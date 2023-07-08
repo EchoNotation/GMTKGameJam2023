@@ -28,7 +28,7 @@ public class MapManager : MonoBehaviour
             tileData[m.tile] = m.tileProperties;
         }
 
-        flowfield = new int[GetHeight(), GetWidth()];
+        flowfield = new int[GetWidth(), GetHeight()];
         Debug.Log(GetHeight() + " x " + GetWidth());
 
         GenerateFlowField();
@@ -52,9 +52,9 @@ public class MapManager : MonoBehaviour
     }
 
     public bool GetPassable(Vector3Int tilePosition) {
-        if(tilePosition.x < 0 || tilePosition.x < GetHeight())
+        if(tilePosition.y < 0 || tilePosition.y >= GetHeight())
             return false;
-        else if(tilePosition.y < 0 || tilePosition.y < GetWidth())
+        else if(tilePosition.x < 0 || tilePosition.x >= GetWidth())
             return false;
 
         var tileProperties = GetTileData(tilePosition);
@@ -81,11 +81,32 @@ public class MapManager : MonoBehaviour
         return res;
     }
 
+    public Vector3 GetDownFlowField(Vector3 position) {
+        Vector3Int  tilePosition = tilemap.WorldToCell(position);
+
+        List<Vector3Int> best = new List<Vector3Int>();
+        int bestScore = 100;
+        foreach(Vector3Int neighbor in GetPassableNeighbors(tilePosition)) {
+            if(flowfield[neighbor.x, neighbor.y] < bestScore) {
+                bestScore = flowfield[neighbor.x, neighbor.y];
+                best.Clear();
+                best.Add(neighbor);
+            }
+            else if(flowfield[neighbor.x, neighbor.y] == bestScore) {
+                best.Add(neighbor);
+            }
+        }
+
+        int idx = Random.Range(0, best.Count);
+
+        return best[idx] + new Vector3(0.5f, 0.5f, 0);
+    }
+
     public void GenerateFlowField() {
-        Vector3Int playerPos = new Vector3Int(0, 1, 0);
+        Vector3Int playerPos = new Vector3Int(1, 1, 0);
         
         Queue<Vector3Int> frontier = new Queue<Vector3Int>();
-        int[,] playerFlowField = new int[GetHeight(), GetWidth()];
+        int[,] playerFlowField = new int[GetWidth(), GetHeight()];
         for(int i = 0; i < playerFlowField.GetLength(0); i++) {
             for(int j = 0; j < playerFlowField.GetLength(1); j++) {
                 playerFlowField[i, j] = -1;
@@ -105,7 +126,7 @@ public class MapManager : MonoBehaviour
             foreach(Vector3Int neighbor in GetPassableNeighbors(current)) {
                 int neighborX = neighbor.x;
                 int neighborY = neighbor.y;
-                if(playerFlowField[neighborX, neighborY] != -1) {
+                if(playerFlowField[neighborX, neighborY] == -1) {
                     frontier.Enqueue(neighbor);
                     playerFlowField[neighborX, neighborY] = playerFlowField[currentX, currentY] + 1;
                 }
@@ -125,9 +146,10 @@ public class MapManager : MonoBehaviour
         for(int i = 0; i < flowfield.GetLength(0); i++) {
             for(int j = 0; j < flowfield.GetLength(1); j++) {
                 // Gizmos.DrawWireCube(new Vector3(i, j, 0), 0.2f*Vector3.one);
-                UnityEditor.Handles.Label(new Vector3(j, i, 0) + 0.5f*Vector3.one, flowfield[i, j].ToString());
+                UnityEditor.Handles.Label(new Vector3(i, j, 0) + 0.5f*Vector3.one, flowfield[i, j].ToString());
             }
         }
+        Gizmos.DrawWireCube(new Vector3(1.5f, 1.5f), Vector3.one);
 
         UnityEditor.Handles.EndGUI();
     }
