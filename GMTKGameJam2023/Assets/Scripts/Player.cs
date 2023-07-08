@@ -38,6 +38,7 @@ public class Player : MonoBehaviour
         spriteRenderer.enabled = true;
         OnPlayerRespawn?.Invoke();
         Debug.Log("OnPlayerRespawn");
+        Time.timeScale = 1f;
     }
 
     void Die() {
@@ -46,6 +47,7 @@ public class Player : MonoBehaviour
         spriteRenderer.enabled = false;
         OnPlayerDeath?.Invoke();
         Debug.Log("OnPlayerDeath");
+        Time.timeScale = 0.2f;
     }
 
     void FixedUpdate()

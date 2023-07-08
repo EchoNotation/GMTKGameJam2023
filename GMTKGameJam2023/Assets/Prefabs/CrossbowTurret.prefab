@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1662307476350006017}
   - component: {fileID: 3198260168283980931}
   - component: {fileID: 3882177380347756489}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: CrossbowTurret
   m_TagString: CrossbowTurret
   m_Icon: {fileID: 0}
@@ -149,7 +149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7247155963770678363}
   - component: {fileID: 3693174946834414852}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Crossbow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
