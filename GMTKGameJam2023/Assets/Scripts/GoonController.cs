@@ -72,7 +72,12 @@ public class GoonController : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision) {
         string tag = collision.GetComponent<Collider2D>().gameObject.tag;
-        if(tag == "Bolt" || tag == "Whirly" || tag == "SpikeTrap") {
+        if(tag == "Whirly" || tag == "SpikeTrap") {
+            Die();
+        }
+        else if(tag == "Bolt")
+        {
+            Destroy(collision.gameObject);
             Die();
         }
     }

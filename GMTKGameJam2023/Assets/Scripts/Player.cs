@@ -32,7 +32,12 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision) {
         string tag = collision.gameObject.tag;
-        if(tag == "Bolt" || tag == "Whirly" || tag == "SpikeTrap") {
+        if(tag == "Whirly" || tag == "SpikeTrap") {
+            Die();
+        }
+        else if(tag == "Bolt")
+        {
+            Destroy(collision.gameObject);
             Die();
         }
         
