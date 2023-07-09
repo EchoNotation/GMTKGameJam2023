@@ -21,6 +21,13 @@ public class GoonController : MonoBehaviour
 
     Color goonColor;
 
+    private AudioSource source;
+    private int pitch;
+    public AudioClip[] pops, yips, yelps;
+    private float nextYip;
+    private float yipOffset;
+    private float yipCooldown;
+
     public GameObject particleSystemObject;
 
     public GameObject splat;
@@ -99,6 +106,9 @@ public class GoonController : MonoBehaviour
         GameObject particleObject = Instantiate(particleSystemObject, transform.position, Quaternion.identity);
         ParticleSystem.MainModule sys = particleObject.GetComponent<ParticleSystem>().main;
         sys.startColor = goonColor;
+        AudioSource source = particleObject.GetComponent<AudioSource>();
+        source.clip = yelps[pitch];
+        source.Play();
 
         GameObject spawnedSplat = Instantiate(splat, transform.position, Quaternion.identity);
         spawnedSplat.GetComponent<SplatSelector>().SetColor(goonColor);
@@ -106,9 +116,31 @@ public class GoonController : MonoBehaviour
         GameObject.FindAnyObjectByType<GameManager>().OnGoonDeath();
     }
 
+    public void SetPitch(int pitch)
+    {
+        this.pitch = pitch;
+        //Debug.Log(pitch);
+        source = GetComponent<AudioSource>();
+        source.clip = pops[0];
+        source.Play();
+        nextYip = Time.time + UnityEngine.Random.Range(1, 6);
+    }
+
     // Update is called once per frame
     void Update()
     {
+        if(Time.time > nextYip)
+        {
+            if(UnityEngine.Random.Range(0, 100) == 0)
+            {
+                nextYip = Time.time + UnityEngine.Random.Range(8, 24);
+                source.Stop();
+                source.clip = yips[pitch];
+                source.Play();
+            }
+        }
+
+
         if(!hasDestination) {
             // 10% chance to rest
             if(UnityEngine.Random.value > restChance)

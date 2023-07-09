@@ -22,11 +22,15 @@ public class Player : MonoBehaviour
 
     bool isRespawning = false;
 
+    private AudioSource source;
+    public AudioClip playerDeath, hatJump, hatTransfer;
+
     public ParticleSystem deathParticleSystem;
 
     public GameObject splat;
 
     private void Start() {
+        source = GetComponent<AudioSource>();
         rigidBody = GetComponent<Rigidbody2D>();
         isDead = false;
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -57,6 +61,10 @@ public class Player : MonoBehaviour
     }
 
     public void Respawn(Vector3 position, GameObject goon) {
+        source.Stop();
+        source.clip = hatJump;
+        source.Play();
+
         StartCoroutine(DoRespawnProcess(position, goon));
     }
 
@@ -82,6 +90,10 @@ public class Player : MonoBehaviour
         GameObject.FindObjectOfType<GameManager>().OnGoonDeath();
 
         hatGameObject.SetActive(false);
+
+        source.Stop();
+        source.clip = hatTransfer;
+        source.Play();
 
         // reset hat position
         hatGameObject.transform.position = transform.position;
@@ -116,6 +128,9 @@ public class Player : MonoBehaviour
         spawnedSplat.GetComponent<SplatSelector>().SetColor(spriteRenderer.color);
 
         deathParticleSystem.Play();
+        source.Stop();
+        source.clip = playerDeath;
+        source.Play();
     }
 
     void FixedUpdate()

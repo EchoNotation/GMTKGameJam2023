@@ -7,15 +7,18 @@ public class SpikeTrap : MonoBehaviour
 {
     private bool isExtended;
     public Sprite retracted, extended;
+    public float offset;
     private float lastTime, extendedTime, retractedTime;
     public BoxCollider2D spikeCollider;
+    private AudioSource source;
 
     // Start is called before the first frame update
     void Start()
     {
+        source = GetComponent<AudioSource>();
         isExtended = false;
 
-        lastTime = 0;
+        lastTime = offset;
         extendedTime = 1f;
         retractedTime = 3f;
     }
@@ -38,6 +41,8 @@ public class SpikeTrap : MonoBehaviour
             isExtended = true;
             spikeCollider.enabled = true;
             GetComponent<SpriteRenderer>().sprite = extended;
+            source.Stop();
+            source.Play();
         }
     }
 }
