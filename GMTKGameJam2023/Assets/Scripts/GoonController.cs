@@ -67,9 +67,10 @@ public class GoonController : MonoBehaviour
     }
 
     IEnumerator Glow() {
+        float glowTime = 0.5f * Time.timeScale;
         while(true) {
-            for(float t = 0f; t <= 1f; t += 0.01f) {
-                spriteRenderer.color = Color.Lerp(Color.white, Color.yellow, t);
+            for(float t = 0f; t <= glowTime; t += Time.deltaTime) {
+                spriteRenderer.color = Color.Lerp(Color.white, Color.yellow, t/glowTime);
                 yield return new WaitForEndOfFrame();
             }
         }
