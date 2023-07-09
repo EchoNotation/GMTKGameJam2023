@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1108085175503800354}
   - component: {fileID: 3303515765886512908}
   - component: {fileID: -9111101636919023260}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Whirly
   m_TagString: Whirly
   m_Icon: {fileID: 0}

@@ -23,13 +23,16 @@ public class MapManager : MonoBehaviour
     public struct Mark {
         public Vector3Int position;
         public float time;
+        public float validForTime;
     }
 
     public float markMemoryTime = 10f;
     public float mapUpdateTime = 0.1f;
-    public int markCost = 5;
+    public int deathMarkCost = 5;
 
     List<Mark> marks;
+
+    HashSet<Vector3Int> traps;
 
     // Start is called before the first frame update
     void Start()
@@ -43,6 +46,12 @@ public class MapManager : MonoBehaviour
         Debug.Log(GetHeight() + " x " + GetWidth());
 
         marks = new List<Mark>();
+
+        traps = new HashSet<Vector3Int>();
+        GameObject[] whirlies = GameObject.FindGameObjectsWithTag("Whirly");
+        foreach(GameObject whirly in whirlies) {
+            traps.Add(tilemap.WorldToCell(whirly.transform.position));
+        }
 
         StartCoroutine(MapUpdate());
     }
@@ -59,13 +68,14 @@ public class MapManager : MonoBehaviour
         Vector3Int tilePosition = tilemap.WorldToCell(position);
         Mark mark = new Mark {
             position = tilePosition,
-            time = Time.time
+            time = Time.time,
+            validForTime = markMemoryTime
         };
         marks.Add(mark);
     }
 
     private bool IsMarkOld(Mark mark) {
-        return mark.time + markMemoryTime < Time.time;
+        return mark.time + mark.validForTime < Time.time;
     }
 
     void ProcessMarks() {
@@ -94,6 +104,10 @@ public class MapManager : MonoBehaviour
             return false;
         else if(tilePosition.x < 0 || tilePosition.x >= GetWidth())
             return false;
+
+        if(traps.Contains(tilePosition)) {
+            return false;
+        }
 
         var tileProperties = GetTileData(tilePosition);
         if(tileProperties) {
@@ -228,14 +242,14 @@ public class MapManager : MonoBehaviour
         // 3. avoid marked locations
 
         foreach(Mark mark in marks) {
-            playerFlowField[mark.position.x, mark.position.y] += markCost;
+            playerFlowField[mark.position.x, mark.position.y] += deathMarkCost;
         }
 
         // update flow field
         flowfield = playerFlowField;
     }
 
-    /*
+    #if UNITY_EDITOR
     private void OnDrawGizmos() {
 
         if(!Application.IsPlaying(gameObject))
@@ -252,5 +266,5 @@ public class MapManager : MonoBehaviour
 
         UnityEditor.Handles.EndGUI();
     }
-    */
+    #endif
 }
