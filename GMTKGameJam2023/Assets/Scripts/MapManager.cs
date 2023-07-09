@@ -52,6 +52,10 @@ public class MapManager : MonoBehaviour
         foreach(GameObject whirly in whirlies) {
             traps.Add(tilemap.WorldToCell(whirly.transform.position));
         }
+        GameObject[] crossbows = GameObject.FindGameObjectsWithTag("CrossbowTurret");
+        foreach(GameObject crossbow in crossbows) {
+            traps.Add(tilemap.WorldToCell(crossbow.transform.position));
+        }
 
         StartCoroutine(MapUpdate());
     }
