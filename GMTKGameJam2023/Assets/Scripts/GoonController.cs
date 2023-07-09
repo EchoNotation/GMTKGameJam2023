@@ -21,6 +21,7 @@ public class GoonController : MonoBehaviour
 
     Color goonColor;
 
+    public bool dying;
     private AudioSource source;
     private int pitch;
     public AudioClip[] pops, yips, yelps;
@@ -38,6 +39,7 @@ public class GoonController : MonoBehaviour
         mapManager = FindAnyObjectByType<MapManager>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
+        dying = false;
         goonColor = UnityEngine.Random.ColorHSV(0f, 1f, 0.2f, 0.8f, 0.9f, 1.0f);
         spriteRenderer.color = goonColor;
 
@@ -102,6 +104,7 @@ public class GoonController : MonoBehaviour
     void Die() {
         Destroy(gameObject);
         enabled = false;
+        dying = true;
 
         GameObject particleObject = Instantiate(particleSystemObject, transform.position, Quaternion.identity);
         ParticleSystem.MainModule sys = particleObject.GetComponent<ParticleSystem>().main;
