@@ -5610,6 +5610,10 @@ MonoBehaviour:
     tileProperties: {fileID: 11400000, guid: bd94d19d00d6ab646b507c2b205063a9, type: 2}
   mapUpdateTime: 0.1
   deathMarkCost: 5
+  distancePenalty: 5
+  spikeTrapCost: 2
+  crowdingCost: 4
+  playerCostOffset: 5
 --- !u!19719996 &428304893
 TilemapCollider2D:
   m_ObjectHideFlags: 0
@@ -7157,10 +7161,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 8358957321429848325, guid: 8436df76eead4cf40993e57dcfc7a451, type: 3}
-      propertyPath: deathParticleSystem
-      value: 
-      objectReference: {fileID: 4686640547002004662, guid: c525aef9cedc9304fa7673dd3a92eb14, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

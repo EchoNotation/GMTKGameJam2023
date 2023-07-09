@@ -36,7 +36,7 @@ Transform:
   - {fileID: 3719876739059276957}
   - {fileID: 2727564945699660198}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4590258110961826829
 SpriteRenderer:
@@ -111,6 +111,9 @@ MonoBehaviour:
   hatTransfer: {fileID: 8300000, guid: 1a4584700efacd147b654d43ea7ae04e, type: 3}
   deathParticleSystem: {fileID: 4686640547002004662, guid: c525aef9cedc9304fa7673dd3a92eb14, type: 3}
   splat: {fileID: 1435899671491551835, guid: dab46e1a9b9c42741afadf6ccbc50dc8, type: 3}
+  standing: {fileID: 21300000, guid: d2e5bd7debae3f944a744010c59e89c0, type: 3}
+  walk1: {fileID: 21300000, guid: 7fa8e19411554d44185599e69e81476e, type: 3}
+  walk2: {fileID: 21300000, guid: a1c2da82ecbdadd4896abd69ed8053e1, type: 3}
   fadeTime: 5
 --- !u!58 &6326399556315563082
 CircleCollider2D:

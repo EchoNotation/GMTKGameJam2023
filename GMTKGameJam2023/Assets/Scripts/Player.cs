@@ -28,12 +28,18 @@ public class Player : MonoBehaviour {
 
     public GameObject splat;
 
+    public Sprite standing, walk1, walk2;
+    private float lastSpriteChange = 0;
+    private const float spriteCooldown = 0.15f;
+    private bool stepTracker, facingRight;
+
     public float fadeTime = 3f;
 
     private void Start () {
         source = GetComponent<AudioSource>();
         rigidBody = GetComponent<Rigidbody2D>();
         isDead = false;
+        stepTracker = false;
         spriteRenderer = GetComponent<SpriteRenderer>();
         collider2D = GetComponent<CircleCollider2D>();
         hatGameObject.SetActive(false);
@@ -163,6 +169,28 @@ public class Player : MonoBehaviour {
             desiredDirection = desiredDirection.normalized;
 
             rigidBody.velocity = desiredDirection * speed;
+
+            if(Time.time > lastSpriteChange + spriteCooldown)
+            {
+                stepTracker = !stepTracker;
+                lastSpriteChange = Time.time;
+            }
+
+            if(desiredDirection.magnitude == 0)
+            {
+                if(facingRight) GetComponent<SpriteRenderer>().sprite = standing;
+                else { };
+                
+            }
+            else
+            {
+                if(desiredDirection.x != 0) facingRight = desiredDirection.x > 0;
+
+                if(stepTracker) GetComponent<SpriteRenderer>().sprite = walk1;
+                else GetComponent<SpriteRenderer>().sprite = walk2;
+            }
+
+            GetComponent<SpriteRenderer>().flipX = !facingRight;
         }
     }
 }
