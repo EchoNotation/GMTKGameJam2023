@@ -235,11 +235,12 @@ public class MapManager : MonoBehaviour
         flowfield = playerFlowField;
     }
 
+    /*
     private void OnDrawGizmos() {
 
         if(!Application.IsPlaying(gameObject))
             return;
-
+        
         UnityEditor.Handles.BeginGUI();
         for(int i = 0; i < flowfield.GetLength(0); i++) {
             for(int j = 0; j < flowfield.GetLength(1); j++) {
@@ -251,5 +252,5 @@ public class MapManager : MonoBehaviour
 
         UnityEditor.Handles.EndGUI();
     }
-
+    */
 }

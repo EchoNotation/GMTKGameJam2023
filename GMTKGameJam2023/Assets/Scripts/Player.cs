@@ -125,7 +125,7 @@ public class Player : MonoBehaviour
         if(!gameOver) Time.timeScale = 0.2f;
 
         GameObject spawnedSplat = Instantiate(splat, transform.position, Quaternion.identity);
-        spawnedSplat.GetComponent<SplatSelector>().SetColor(spriteRenderer.color);
+        spawnedSplat.GetComponent<SplatSelector>().SetColor(new Color(1f, 0.7490196f, 0f));
 
         deathParticleSystem.Play();
         source.Stop();
