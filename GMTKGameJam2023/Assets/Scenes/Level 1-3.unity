@@ -5859,6 +5859,8 @@ MonoBehaviour:
   deathMarkCost: 5
   distancePenalty: 5
   spikeTrapCost: 2
+  crowdingCost: 4
+  playerCostOffset: 5
 --- !u!19719996 &428304893
 TilemapCollider2D:
   m_ObjectHideFlags: 0
@@ -7246,6 +7248,10 @@ PrefabInstance:
     - target: {fileID: 6737929057594798469, guid: aa476081134543046bf08c09254ae2ff, type: 3}
       propertyPath: m_Name
       value: WinPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 6762764758928189060, guid: aa476081134543046bf08c09254ae2ff, type: 3}
+      propertyPath: m_text
+      value: Next Wave
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

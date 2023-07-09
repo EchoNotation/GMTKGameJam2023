@@ -181,7 +181,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Next Level
+  m_text: Level Select
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fb445ce73421a614fb6726a3de28c660, type: 2}
   m_sharedMaterial: {fileID: -7705542432632843518, guid: fb445ce73421a614fb6726a3de28c660, type: 2}
@@ -6971,6 +6971,8 @@ MonoBehaviour:
   deathMarkCost: 5
   distancePenalty: 5
   spikeTrapCost: 2
+  crowdingCost: 4
+  playerCostOffset: 5
 --- !u!19719996 &428304893
 TilemapCollider2D:
   m_ObjectHideFlags: 0
@@ -10775,7 +10777,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Main Menu
+          m_StringArgument: Level Select
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1311837310
