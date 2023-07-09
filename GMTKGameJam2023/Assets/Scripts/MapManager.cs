@@ -31,6 +31,8 @@ public class MapManager : MonoBehaviour
     public int deathMarkCost = 15;
     public int distancePenalty = 5;
     public int spikeTrapCost = 2;
+    public int crowdingCost = 4;
+    public int playerCostOffset = 5;
 
     List<Mark> marks;
 
@@ -227,7 +229,11 @@ public class MapManager : MonoBehaviour
             }
         }
 
-        playerFlowField[playerPos.x, playerPos.y] += 1;
+        // avoid crowding player space
+        foreach(Vector3Int neighbor in GetPassableNeighbors(playerPos)) {
+            playerFlowField[neighbor.x, neighbor.y] += playerCostOffset;
+        }
+        playerFlowField[playerPos.x, playerPos.y] += playerCostOffset + distancePenalty;
 
         // 2. Avoid other goons
 
@@ -241,7 +247,7 @@ public class MapManager : MonoBehaviour
             // X . X
             //   X
             if(GetPassable(goonPosition))
-                playerFlowField[goonPosition.x, goonPosition.y] += 1;
+                playerFlowField[goonPosition.x, goonPosition.y] += crowdingCost;
             //if(GetPassable(newPos = goonPosition + new Vector3Int(0, 1)))
             //    playerFlowField[newPos.x, newPos.y] += 1;
             //if(GetPassable(newPos = goonPosition + new Vector3Int(0, -1)))
