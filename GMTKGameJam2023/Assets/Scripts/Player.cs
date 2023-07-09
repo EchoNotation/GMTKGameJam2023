@@ -30,7 +30,7 @@ public class Player : MonoBehaviour {
 
     public float fadeTime = 3f;
 
-    private void Start() {
+    private void Start () {
         source = GetComponent<AudioSource>();
         rigidBody = GetComponent<Rigidbody2D>();
         isDead = false;
@@ -40,7 +40,7 @@ public class Player : MonoBehaviour {
         deathParticleSystem = GetComponentInChildren<ParticleSystem>();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision) {
+    private void OnCollisionEnter2D (Collision2D collision) {
         string tag = collision.gameObject.tag;
         if(tag == "Whirly" || tag == "SpikeTrap") {
             Die();
@@ -51,32 +51,29 @@ public class Player : MonoBehaviour {
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) {
+    private void OnTriggerEnter2D (Collider2D collision) {
         string tag = collision.gameObject.tag;
         if(tag == "Exit") {
             GameObject.FindObjectOfType<GameManager>().ExitReached();
         }
     }
 
-    public void Respawn(Vector3 position, GameObject goon) {
+    public void Respawn (Vector3 position, GameObject goon) {
+        StartCoroutine(DoRespawnProcess(position, goon));
+    }
+
+    IEnumerator DoRespawnProcess (Vector3 position, GameObject goon) {
+        if(isRespawning || !goon) yield break;
+        isRespawning = true;
+
         source.Stop();
         source.clip = hatJump;
         source.Play();
 
-        StartCoroutine(DoRespawnProcess(position, goon));
-    }
-
-    IEnumerator DoRespawnProcess(Vector3 position, GameObject goon) {
-        if(isRespawning) yield break;
-        isRespawning = true;
-
         // disable goon glowing
         OnPlayerRespawn?.Invoke();
 
-        hatGameObject.SetActive(true);
-        hatGameObject.transform.position = transform.position;
-
-        Vector3 startingPosition = transform.position;
+        Vector3 startingPosition = hatGameObject.transform.position;
 
         for(float t = 0f; t <= hatTime * Time.timeScale; t += Time.deltaTime) {
             hatGameObject.transform.position = Vector3.Slerp(startingPosition, position, t / (hatTime * Time.timeScale));
@@ -84,12 +81,16 @@ public class Player : MonoBehaviour {
             yield return new WaitForEndOfFrame();
         }
 
-        if(goon)
+        if(!goon)
         {
-            Destroy(goon);
-            GameObject.FindObjectOfType<GameManager>().OnGoonDeath();
+            OnPlayerDeath?.Invoke();
+            isRespawning = false;
+            yield break;
         }
-        
+
+        Destroy(goon);
+        GameObject.FindObjectOfType<GameManager>().OnGoonDeath();
+
         hatGameObject.SetActive(false);
 
         source.Stop();
@@ -138,7 +139,10 @@ public class Player : MonoBehaviour {
         collider2D.enabled = false;
         spriteRenderer.enabled = false;
         OnPlayerDeath?.Invoke();
+
         hatGameObject.SetActive(true);
+        hatGameObject.transform.position = transform.position;
+
         bool gameOver = GameObject.FindAnyObjectByType<GameManager>().OnPlayerDeath();
 
         if(!gameOver) Time.timeScale = 0.2f;

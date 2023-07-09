@@ -55,13 +55,8 @@ public class GameManager : MonoBehaviour
 
     public void OnGoonDeath()
     {
-        Player player = FindAnyObjectByType<Player>();
         numberGoonsAlive--;
-        if(numberGoonsAlive < 1 && reinforcementCount == 0 && (player && player.isDead))
-        {
-            //Game over
-            LevelFailed();
-        }
+        if(CheckGameOver()) LevelFailed();
     }
 
     public bool OnPlayerDeath()
@@ -69,10 +64,28 @@ public class GameManager : MonoBehaviour
         if(numberGoonsAlive < 1 && reinforcementCount == 0)
         {
             //Game over
-            LevelFailed();
-            return true;
+            if(CheckGameOver())
+            {
+                LevelFailed();
+                return true;
+            }
         }
         return false;
+    }
+
+    private bool CheckGameOver()
+    {
+        if(levelCompleted) return false;
+        GameObject[] goons = GameObject.FindGameObjectsWithTag("Goon");
+        
+        for(int i = 0; i < goons.Length; i++)
+        {
+            if(!goons[i].GetComponent<GoonController>().dying) return false;
+        }
+
+        Player player = FindAnyObjectByType<Player>();
+        if(player && !player.isDead) return false;
+        return true;
     }
 
     public void ExitReached()
@@ -86,7 +99,6 @@ public class GameManager : MonoBehaviour
 
     public void LevelFailed()
     {
-        if(levelCompleted) return;
         losePanel.SetActive(true);
         source.clip = levelLost;
         source.Play();
