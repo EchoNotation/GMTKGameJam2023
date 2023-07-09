@@ -1590,7 +1590,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Reach the exit!\nYou only have 30? goons \nto complete each level."
+  m_text: "Reach the exit!\nYou only have 50 goons \nto complete each level."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fb445ce73421a614fb6726a3de28c660, type: 2}
   m_sharedMaterial: {fileID: -7705542432632843518, guid: fb445ce73421a614fb6726a3de28c660, type: 2}
