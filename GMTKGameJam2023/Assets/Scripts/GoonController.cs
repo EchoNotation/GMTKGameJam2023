@@ -41,7 +41,8 @@ public class GoonController : MonoBehaviour
         goonColor = UnityEngine.Random.ColorHSV(0f, 1f, 0.2f, 0.8f, 0.9f, 1.0f);
         spriteRenderer.color = goonColor;
 
-        if(GameObject.FindObjectOfType<Player>().isDead) StartGlowing();
+        Player player = GameObject.FindObjectOfType<Player>();
+        if(player && player.isDead) StartGlowing();
     }
 
     private void OnEnable() {
@@ -78,7 +79,6 @@ public class GoonController : MonoBehaviour
     }
 
     private void OnMouseDown() {
-        Debug.Log("clicked goon");
         Player player = GameObject.FindObjectOfType<Player>();
         if(player && player.isDead) {
             restUntil = Time.time + 3f;

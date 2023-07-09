@@ -179,7 +179,7 @@ public class MapManager : MonoBehaviour
         int[,] playerFlowField = new int[GetWidth(), GetHeight()];
 
         Player player = GameObject.FindObjectOfType<Player>();
-        if(!player && player.isDead) {
+        if(!player || player.isDead) {
             flowfield = playerFlowField;
             return;
         }

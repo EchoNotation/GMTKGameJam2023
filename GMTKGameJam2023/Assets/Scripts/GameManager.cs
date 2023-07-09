@@ -55,7 +55,13 @@ public class GameManager : MonoBehaviour
 
     public void OnGoonDeath()
     {
+        Player player = FindAnyObjectByType<Player>();
         numberGoonsAlive--;
+        if(numberGoonsAlive < 1 && reinforcementCount == 0 && (player && player.isDead))
+        {
+            //Game over
+            LevelFailed();
+        }
     }
 
     public bool OnPlayerDeath()
