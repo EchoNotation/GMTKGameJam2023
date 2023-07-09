@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     public GameObject winPanel, losePanel;
     private const int maxGoonsAlive = 15;
     private int numberGoonsAlive;
-    public int reinforcementCount;
+    private int reinforcementCount;
     private float lastGoonSpawn;
     private const float goonSpawnCooldown = 1;
     public bool levelCompleted = false;
@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
 
         lastGoonSpawn = Time.time;
         numberGoonsAlive = 0;
+        reinforcementCount = 50;
 
         Time.timeScale = 1;
 
@@ -71,7 +72,7 @@ public class GameManager : MonoBehaviour
     public void ExitReached()
     {
         levelCompleted = true;
-        GameObject.FindAnyObjectByType<Player>().isDead = true; //Just used to prevent movement after winning
+        GameObject.FindAnyObjectByType<Player>().Win();
         winPanel.SetActive(true);
         source.clip = levelWon;
         source.Play();
