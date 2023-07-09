@@ -48,6 +48,7 @@ public class Music : MonoBehaviour
             case "Main Menu":
             case "HowToPlay":
             case "Credits":
+            case "Level Select":
                 TryPlayMenuTheme();
                 break;
             default:
