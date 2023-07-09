@@ -34,7 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5091047446261750107
 SpriteRenderer:
@@ -103,6 +103,7 @@ MonoBehaviour:
   speed: 3.5
   restChance: 0.05
   restTime: 2
+  dying: 0
   pops:
   - {fileID: 8300000, guid: 69bab12cfd1f2e54d99e5381625fd36a, type: 3}
   - {fileID: 8300000, guid: f1357422bf976a94ea382a264772cb45, type: 3}
@@ -117,6 +118,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d64f9d7af7b0bd94595458adc07cd187, type: 3}
   particleSystemObject: {fileID: 9167385300031103377, guid: 40510f3d12736f041aaaad2fe8ff7ccb, type: 3}
   splat: {fileID: 1435899671491551835, guid: dab46e1a9b9c42741afadf6ccbc50dc8, type: 3}
+  standing: {fileID: 21300000, guid: 9f6353fcc593e64428f2520e7b27d5ac, type: 3}
+  walk1: {fileID: 21300000, guid: d6d5468491489ea4d9fa5afce6385149, type: 3}
+  walk2: {fileID: 21300000, guid: 6ab1692ad2d0e7748bd620c38bc0e344, type: 3}
 --- !u!58 &-3560113311702492214
 CircleCollider2D:
   m_ObjectHideFlags: 0
