@@ -21,6 +21,9 @@ public class CrossbowTurret : MonoBehaviour
     private int shotsFired;
     private const float turnRate = 50;
 
+    public float radius = 5f;
+    CircleCollider2D circleCollider;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +35,9 @@ public class CrossbowTurret : MonoBehaviour
         recoverTime = 2f;
 
         shotsFired = 0;
+
+        circleCollider = GetComponent<CircleCollider2D>();
+        circleCollider.radius = radius;
     }
 
     // Update is called once per frame
