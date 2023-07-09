@@ -20,10 +20,12 @@ public class CrossbowTurret : MonoBehaviour
     private float lastTime, fireTime, recoverTime;
     private int shotsFired;
     private const float turnRate = 50;
+    private AudioSource source;
 
     // Start is called before the first frame update
     void Start()
     {
+        source = GetComponent<AudioSource>();
         targets = new List<GameObject>();
 
         firing = false;
@@ -87,6 +89,9 @@ public class CrossbowTurret : MonoBehaviour
     private void Fire()
     {
         if(tgt == null) return;
+
+        source.Stop();
+        source.Play();
 
         Vector3 position = transform.position;
         position.z = -5;
