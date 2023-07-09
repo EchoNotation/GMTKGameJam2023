@@ -116,6 +116,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: db54535143af53841aedca3cc4878ab3, type: 3}
   - {fileID: 8300000, guid: d64f9d7af7b0bd94595458adc07cd187, type: 3}
   particleSystemObject: {fileID: 9167385300031103377, guid: 40510f3d12736f041aaaad2fe8ff7ccb, type: 3}
+  splat: {fileID: 1435899671491551835, guid: dab46e1a9b9c42741afadf6ccbc50dc8, type: 3}
 --- !u!58 &-3560113311702492214
 CircleCollider2D:
   m_ObjectHideFlags: 0

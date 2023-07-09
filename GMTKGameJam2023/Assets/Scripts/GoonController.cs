@@ -30,6 +30,8 @@ public class GoonController : MonoBehaviour
 
     public GameObject particleSystemObject;
 
+    public GameObject splat;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -107,6 +109,9 @@ public class GoonController : MonoBehaviour
         AudioSource source = particleObject.GetComponent<AudioSource>();
         source.clip = yelps[pitch];
         source.Play();
+
+        GameObject spawnedSplat = Instantiate(splat, transform.position, Quaternion.identity);
+        spawnedSplat.GetComponent<SplatSelector>().SetColor(goonColor);
 
         GameObject.FindAnyObjectByType<GameManager>().OnGoonDeath();
     }

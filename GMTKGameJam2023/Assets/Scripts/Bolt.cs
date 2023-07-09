@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bolt : MonoBehaviour
 {
-    private float speed = 5;
+    public float speed = 10f;
 
     // Start is called before the first frame update
     void Start()
