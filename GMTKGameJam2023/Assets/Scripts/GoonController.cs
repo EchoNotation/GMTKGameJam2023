@@ -33,6 +33,11 @@ public class GoonController : MonoBehaviour
 
     public GameObject splat;
 
+    public Sprite standing, walk1, walk2;
+    private bool facingRight, stepTracker;
+    private float lastSpriteChange = 0f;
+    private float spriteCooldown = 0.1f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -159,6 +164,28 @@ public class GoonController : MonoBehaviour
 
             float distance = Vector3.Distance(transform.position, destination);
             if(distance < 0.05f || distance > 2f) hasDestination = false;
+
+            Vector3 direction = destination - transform.position;
+
+            if(Time.time > lastSpriteChange + spriteCooldown)
+            {
+                stepTracker = !stepTracker;
+                lastSpriteChange = Time.time;
+            }
+
+            if(direction.magnitude <= 0.1)
+            {
+                GetComponent<SpriteRenderer>().sprite = standing;
+            }
+            else
+            {
+                if(direction.x != 0) facingRight = direction.x > 0;
+
+                if(stepTracker) GetComponent<SpriteRenderer>().sprite = walk1;
+                else GetComponent<SpriteRenderer>().sprite = walk2;
+            }
+
+            GetComponent<SpriteRenderer>().flipX = !facingRight;
         }
     }
 }

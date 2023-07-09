@@ -176,11 +176,9 @@ public class Player : MonoBehaviour {
                 lastSpriteChange = Time.time;
             }
 
-            if(desiredDirection.magnitude == 0)
+            if(desiredDirection.magnitude <= 0.1)
             {
-                if(facingRight) GetComponent<SpriteRenderer>().sprite = standing;
-                else { };
-                
+                GetComponent<SpriteRenderer>().sprite = standing;
             }
             else
             {
