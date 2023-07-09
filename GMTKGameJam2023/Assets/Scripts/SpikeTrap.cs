@@ -17,6 +17,7 @@ public class SpikeTrap : MonoBehaviour
     {
         source = GetComponent<AudioSource>();
         isExtended = false;
+        spikeCollider.enabled = false;
 
         lastTime = Time.time + offset;
         extendedTime = 1f;
