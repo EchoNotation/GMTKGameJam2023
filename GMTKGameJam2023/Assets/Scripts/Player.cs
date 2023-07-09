@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class Player : MonoBehaviour
-{
+public class Player : MonoBehaviour {
     public float speed = 2f;
     public float hatTime = 3f;
 
@@ -29,6 +28,8 @@ public class Player : MonoBehaviour
 
     public GameObject splat;
 
+    public float fadeTime = 3f;
+
     private void Start() {
         source = GetComponent<AudioSource>();
         rigidBody = GetComponent<Rigidbody2D>();
@@ -44,18 +45,15 @@ public class Player : MonoBehaviour
         if(tag == "Whirly" || tag == "SpikeTrap") {
             Die();
         }
-        else if(tag == "Bolt")
-        {
+        else if(tag == "Bolt") {
             Destroy(collision.gameObject);
             Die();
-        }   
+        }
     }
 
-    private void OnTriggerEnter2D (Collider2D collision)
-    {
+    private void OnTriggerEnter2D(Collider2D collision) {
         string tag = collision.gameObject.tag;
-        if(tag == "Exit")
-        {
+        if(tag == "Exit") {
             GameObject.FindObjectOfType<GameManager>().ExitReached();
         }
     }
@@ -80,8 +78,8 @@ public class Player : MonoBehaviour
 
         Vector3 startingPosition = transform.position;
 
-        for(float t = 0f; t <= hatTime*Time.timeScale; t += Time.deltaTime) {
-            hatGameObject.transform.position = Vector3.Slerp(startingPosition, position, t/ (hatTime * Time.timeScale));
+        for(float t = 0f; t <= hatTime * Time.timeScale; t += Time.deltaTime) {
+            hatGameObject.transform.position = Vector3.Slerp(startingPosition, position, t / (hatTime * Time.timeScale));
             // Debug.Log("hat moving " + t.ToString());
             yield return new WaitForEndOfFrame();
         }
@@ -103,13 +101,31 @@ public class Player : MonoBehaviour
         isDead = false;
         collider2D.enabled = true;
         spriteRenderer.enabled = true;
-        
+
         Time.timeScale = 1f;
 
         rigidBody.simulated = true;
 
         isRespawning = false;
 
+        yield break;
+    }
+
+    public void Win() {
+        rigidBody.simulated = false;
+        collider2D.enabled = false;
+
+        StartCoroutine(DoFadeOut());
+    }
+
+    IEnumerator DoFadeOut() {
+        Color color = spriteRenderer.color;
+        for(float t = 0f; t < fadeTime; t += Time.deltaTime) {
+            float strength = Mathf.Lerp(0, 1, t / (hatTime * Time.timeScale));
+            spriteRenderer.color = new Color(color.r, color.g, color.b, strength);
+            yield return new WaitForEndOfFrame();
+        }
+        Destroy(gameObject);
         yield break;
     }
 

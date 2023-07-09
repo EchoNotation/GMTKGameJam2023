@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
     public void ExitReached()
     {
         levelCompleted = true;
-        GameObject.FindAnyObjectByType<Player>().isDead = true; //Just used to prevent movement after winning
+        GameObject.FindAnyObjectByType<Player>().Win();
         winPanel.SetActive(true);
         source.clip = levelWon;
         source.Play();
