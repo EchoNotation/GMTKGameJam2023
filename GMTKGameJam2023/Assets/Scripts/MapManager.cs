@@ -28,11 +28,16 @@ public class MapManager : MonoBehaviour
 
     private float markMemoryTime = 1f;
     public float mapUpdateTime = 0.1f;
-    public int deathMarkCost = 5;
+    public int deathMarkCost = 15;
+    public int distancePenalty = 5;
+    public int spikeTrapCost = 2;
+    public int crowdingCost = 4;
+    public int playerCostOffset = 5;
 
     List<Mark> marks;
 
-    HashSet<Vector3Int> traps;
+    HashSet<Vector3Int> noStepTraps;
+    HashSet<Vector3Int> avoidTraps;
 
     // Start is called before the first frame update
     void Start()
@@ -47,14 +52,20 @@ public class MapManager : MonoBehaviour
 
         marks = new List<Mark>();
 
-        traps = new HashSet<Vector3Int>();
+        noStepTraps = new HashSet<Vector3Int>();
         GameObject[] whirlies = GameObject.FindGameObjectsWithTag("Whirly");
         foreach(GameObject whirly in whirlies) {
-            traps.Add(tilemap.WorldToCell(whirly.transform.position));
+            noStepTraps.Add(tilemap.WorldToCell(whirly.transform.position));
         }
         GameObject[] crossbows = GameObject.FindGameObjectsWithTag("CrossbowTurret");
         foreach(GameObject crossbow in crossbows) {
-            traps.Add(tilemap.WorldToCell(crossbow.transform.position));
+            noStepTraps.Add(tilemap.WorldToCell(crossbow.transform.position));
+        }
+
+        avoidTraps = new HashSet<Vector3Int>();
+        GameObject[] spikes = GameObject.FindGameObjectsWithTag("SpikeTrap");
+        foreach(GameObject spike in spikes) {
+            avoidTraps.Add(tilemap.WorldToCell(spike.transform.position));
         }
 
         StartCoroutine(MapUpdate());
@@ -109,7 +120,7 @@ public class MapManager : MonoBehaviour
         else if(tilePosition.x < 0 || tilePosition.x >= GetWidth())
             return false;
 
-        if(traps.Contains(tilePosition)) {
+        if(noStepTraps.Contains(tilePosition)) {
             return false;
         }
 
@@ -159,7 +170,7 @@ public class MapManager : MonoBehaviour
         Vector3Int  tilePosition = tilemap.WorldToCell(position);
 
         List<Vector3Int> best = new List<Vector3Int>();
-        float bestScore = 100f;
+        int bestScore = 9999;
         foreach(Vector3Int neighbor in GetPassableNeighbors(tilePosition)) {
             if(flowfield[neighbor.x, neighbor.y] < bestScore) {
                 bestScore = flowfield[neighbor.x, neighbor.y];
@@ -213,12 +224,16 @@ public class MapManager : MonoBehaviour
                 int neighborY = neighbor.y;
                 if(playerFlowField[neighborX, neighborY] == -1) {
                     frontier.Enqueue(neighbor);
-                    playerFlowField[neighborX, neighborY] = playerFlowField[currentX, currentY] + 1;
+                    playerFlowField[neighborX, neighborY] = playerFlowField[currentX, currentY] + distancePenalty;
                 }
             }
         }
 
-        playerFlowField[playerPos.x, playerPos.y] += 1;
+        // avoid crowding player space
+        foreach(Vector3Int neighbor in GetPassableNeighbors(playerPos)) {
+            playerFlowField[neighbor.x, neighbor.y] += playerCostOffset;
+        }
+        playerFlowField[playerPos.x, playerPos.y] += playerCostOffset + distancePenalty;
 
         // 2. Avoid other goons
 
@@ -232,7 +247,7 @@ public class MapManager : MonoBehaviour
             // X . X
             //   X
             if(GetPassable(goonPosition))
-                playerFlowField[goonPosition.x, goonPosition.y] += 1;
+                playerFlowField[goonPosition.x, goonPosition.y] += crowdingCost;
             //if(GetPassable(newPos = goonPosition + new Vector3Int(0, 1)))
             //    playerFlowField[newPos.x, newPos.y] += 1;
             //if(GetPassable(newPos = goonPosition + new Vector3Int(0, -1)))
@@ -247,6 +262,11 @@ public class MapManager : MonoBehaviour
 
         foreach(Mark mark in marks) {
             playerFlowField[mark.position.x, mark.position.y] += deathMarkCost;
+        }
+
+        // avoid traps
+        foreach(Vector3Int trapLocation in avoidTraps) {
+            playerFlowField[trapLocation.x, trapLocation.y] += spikeTrapCost;
         }
 
         // update flow field
