@@ -89,6 +89,7 @@ public class GoonController : MonoBehaviour
     private void OnTriggerStay2D(Collider2D collision) {
         string tag = collision.GetComponent<Collider2D>().gameObject.tag;
         if(tag == "Whirly" || tag == "SpikeTrap") {
+            mapManager.RegisterDeath(collision.gameObject.transform.position);
             Die();
         }
         else if(tag == "Bolt")
@@ -99,7 +100,6 @@ public class GoonController : MonoBehaviour
     }
 
     void Die() {
-        mapManager.RegisterDeath(transform.position);
         Destroy(gameObject);
         enabled = false;
 

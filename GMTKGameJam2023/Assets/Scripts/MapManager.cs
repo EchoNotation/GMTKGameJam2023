@@ -26,7 +26,7 @@ public class MapManager : MonoBehaviour
         public float validForTime;
     }
 
-    public float markMemoryTime = 10f;
+    private float markMemoryTime = 1f;
     public float mapUpdateTime = 0.1f;
     public int deathMarkCost = 5;
 
