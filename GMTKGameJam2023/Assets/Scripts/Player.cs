@@ -84,9 +84,12 @@ public class Player : MonoBehaviour {
             yield return new WaitForEndOfFrame();
         }
 
-        Destroy(goon);
-        GameObject.FindObjectOfType<GameManager>().OnGoonDeath();
-
+        if(goon)
+        {
+            Destroy(goon);
+            GameObject.FindObjectOfType<GameManager>().OnGoonDeath();
+        }
+        
         hatGameObject.SetActive(false);
 
         source.Stop();
