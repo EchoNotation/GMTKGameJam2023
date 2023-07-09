@@ -111,6 +111,7 @@ MonoBehaviour:
   hatTransfer: {fileID: 8300000, guid: 1a4584700efacd147b654d43ea7ae04e, type: 3}
   deathParticleSystem: {fileID: 4686640547002004662, guid: c525aef9cedc9304fa7673dd3a92eb14, type: 3}
   splat: {fileID: 1435899671491551835, guid: dab46e1a9b9c42741afadf6ccbc50dc8, type: 3}
+  fadeTime: 5
 --- !u!58 &6326399556315563082
 CircleCollider2D:
   m_ObjectHideFlags: 0

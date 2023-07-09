@@ -121,7 +121,7 @@ public class Player : MonoBehaviour {
     IEnumerator DoFadeOut() {
         Color color = spriteRenderer.color;
         for(float t = 0f; t < fadeTime; t += Time.deltaTime) {
-            float strength = Mathf.Lerp(0, 1, t / (hatTime * Time.timeScale));
+            float strength = Mathf.Lerp(1, 0, t / (fadeTime * Time.timeScale));
             spriteRenderer.color = new Color(color.r, color.g, color.b, strength);
             yield return new WaitForEndOfFrame();
         }
